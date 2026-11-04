@@ -1,0 +1,10 @@
+# Big, busy stocks with lots of option tickets. One per line (# = note). SPY is always checked too.
+QQQ
+AAPL
+TSLA
+NVDA
+AMD
+MSFT
+AMZN
+META
+GOOGL

@@ -1,0 +1,44 @@
+name: Options Boss
+
+on:
+  schedule:
+    - cron: "*/15 13-21 * * 1-5"   # every 15 minutes on weekdays, ~9 am to 5 pm New York time (GitHub can run a bit late)
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "What to run"
+        type: choice
+        options: [run, hello, backtest, scoreboard, report]
+        default: run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: options-boss
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py ${{ github.event.inputs.task || 'run' }}
+      - name: Save results
+        run: |
+          git config user.name "options-boss-bot"
+          git config user.email "options-boss-bot@users.noreply.github.com"
+          mkdir -p data docs
+          git add -A data docs
+          git diff --cached --quiet || git commit -m "Update Options Boss $(date -u +%FT%H:%M)"
+          git pull --rebase --quiet && git push
