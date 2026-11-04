@@ -45,3 +45,12 @@ SKIP_EARNINGS = True           # "Earnings day": skip if the company reports ear
 TARGET_PCT = 40                # sell when the ticket grows 40%
 STOP_PCT = 25                  # sell if it shrinks 25%
 FEE_PER_CONTRACT = 0.04        # Robinhood's small per-contract fees, each way (about)
+
+# --- Rules learned from YouTube (2026-11-04). All OFF: on the 2-month past test none of them
+# helped (each one lost the same or more per ticket). Switch one on (True / 1) to re-test it later. ---
+TREND_FILTER = False           # "Truth line": Calls only above the 200-day average line, Puts only below
+TREND_DAYS = 200
+NO_TRADE_ZONE = False          # skip a breakout still stuck inside yesterday's high-low range
+WAIT_FOR_RETEST = False        # wait for it to break out, come back to the box edge, and go again
+RETEST_NEAR_PCT = 0.15         # "came back" = within 0.15% of the box edge
+ITM_STEPS = 0                  # 1 = pick the strike one step "in the money" (melts slower, costs more)

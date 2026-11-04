@@ -113,3 +113,38 @@ def jumpiness(ticker):
         return float(rets.std() * math.sqrt(252)) if len(rets) >= 10 else None
     except Exception:
         return None
+
+
+def daily(tickers, period="1y"):
+    """Daily closing prices {ticker: series with plain dates}, or {} if Yahoo is down."""
+    import yfinance as yf
+    try:
+        df = yf.download(list(tickers), period=period, interval="1d", group_by="ticker",
+                         progress=False, auto_adjust=False, threads=True)
+    except Exception as e:
+        print("No daily prices:", e)
+        return {}
+    out = {}
+    for t in tickers:
+        try:
+            c = (df[t] if isinstance(df.columns, pd.MultiIndex) else df)["Close"].dropna()
+        except KeyError:
+            continue
+        c.index = pd.to_datetime(c.index).tz_localize(None).normalize()
+        if len(c):
+            out[t] = c
+    return out
+
+
+def trend_on(closes, day):
+    """'up' if yesterday's close was above the 200-day average line, 'down' if below, None if unknown."""
+    c = closes[closes.index < pd.Timestamp(day).tz_localize(None).normalize()] if closes is not None else []
+    if len(c) < C.TREND_DAYS:
+        return None
+    return "up" if float(c.iloc[-1]) > float(c.tail(C.TREND_DAYS).mean()) else "down"
+
+
+def trend(tickers, ts):
+    """{ticker: 'up'/'down'/None} for today (uses only finished days)."""
+    d = daily(tickers)
+    return {t: trend_on(d.get(t), ts) for t in tickers}

@@ -33,6 +33,22 @@ and with `/skills`).
 **stop at Review, don't swipe up.** We watch 2-3 months of live results before even thinking
 about real money.
 
+### Lessons from YouTube (tested 2026-11-04)
+
+We watched 9 popular options videos and tested their rules on the last 2 months (estimated prices).
+None of them helped, so they are all **switched off** in `optionsboss/config.py`. We can re-test them
+later, when there's more data:
+
+| Rule | Setting | Past test |
+|---|---|---|
+| 📏 Trend line: Calls only above the 200-day average, Puts only below | `TREND_FILTER` | Lost more per ticket |
+| 🚧 No trading zone: skip if still inside yesterday's high-low range | `NO_TRADE_ZONE` | Lost more per ticket |
+| 🔁 Don't chase: wait for the come-back to the box edge | `WAIT_FOR_RETEST` | Lost more per ticket |
+| 💪 Strike one step "in the money" | `ITM_STEPS` | Mixed, no clear help |
+
+Good lessons the bot **already** follows: no cheap "lottery" tickets, skip earnings, small price gaps,
+same small size every time, and lots of practice tickets before any real money.
+
 ## What you'll get on Telegram (from your "Options Boss" bot)
 
 | When | Message |

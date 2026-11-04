@@ -53,7 +53,8 @@ def scan(ts=None, force=False):
         print("No market data for today (holiday or data down).")
         return
     picked, rows = [], []
-    for setup in skill.find(market, ts):
+    trend = data.trend(list(market), ts) if C.TREND_FILTER else None
+    for setup in skill.find(market, ts, trend):
         t, why = ticket.choose(setup, ts)
         base = {"date": ts.strftime("%Y-%m-%d"), "sent_at": ts.isoformat(), "skill": skill.NAME,
                 "ticker": setup["ticker"], "side": setup["side"], "reason": skill.reason(setup)}

@@ -16,7 +16,8 @@ from . import data
 WHY = {"no_date": "there was no ticket ending 2-10 days from now",
        "no_ticket": "no ticket was popular enough, close enough, and under $1,000",
        "pricey": "tickets were too pricey right now (people expect big jumps)",
-       "earnings": "the company reports earnings before the ticket ends (prices jump wildly)"}
+       "earnings": "the company reports earnings before the ticket ends (prices jump wildly)",
+       "trend": "the stock is below its 200-day line (its long-term trend is down), so no Call"}
 
 
 def pick_expiry(dates, today):
@@ -27,8 +28,9 @@ def pick_expiry(dates, today):
     return None
 
 
-def pick_strike(df, price):
-    """The best ticket in a chain (table) near the stock price, or None."""
+def pick_strike(df, price, side="call"):
+    """The best ticket in a chain (table) near the stock price, or None.
+    With ITM_STEPS = 1 it picks one strike "in the money" (a Call's strike just below the price)."""
     if df is None or not len(df):
         return None
     df = df.copy()
@@ -39,7 +41,13 @@ def pick_strike(df, price):
             & (df["ask"] * 100 <= C.MAX_TICKET_COST)]
     if not len(df):
         return None
-    return df.loc[(df["strike"] - price).abs().idxmin()]
+    best = df.loc[(df["strike"] - price).abs().idxmin()]
+    if C.ITM_STEPS:
+        inside = df[df["strike"] < price] if side == "call" else df[df["strike"] > price]
+        inside = inside.sort_values("strike", ascending=(side != "call"))
+        if len(inside) >= C.ITM_STEPS:
+            best = inside.iloc[C.ITM_STEPS - 1]
+    return best
 
 
 def _cdf(x):
@@ -88,7 +96,7 @@ def choose(setup, ts):
         return None, "no_date"
     if C.SKIP_EARNINGS and earnings_before(data.earnings_dates(setup["ticker"]), ts, exp):
         return None, "earnings"
-    row = pick_strike(data.chain(setup["ticker"], exp, setup["side"]), setup["price"])
+    row = pick_strike(data.chain(setup["ticker"], exp, setup["side"]), setup["price"], setup["side"])
     if row is None:
         return None, "no_ticket"
     years = max((pd.Timestamp(exp) + pd.Timedelta(hours=16) - ts.tz_localize(None)).total_seconds(), 3600) / (365 * 86400)

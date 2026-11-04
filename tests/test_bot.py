@@ -7,7 +7,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from optionsboss import backtest, bot, copycat, plain, skill, ticket
+from optionsboss import backtest, bot, copycat, data, plain, skill, ticket
 from optionsboss import config as C
 
 NY = C.TIMEZONE
@@ -218,6 +218,52 @@ def test_waiting_pick_missed_after_2pm():
                         "wait_price": 1.0, "sent_at": "2026-11-03T11:30:00-05:00", "skill": "Bull Flag", "note": None}])
     out = copycat.watch(df, pd.Timestamp("2026-11-03 14:05", tz=NY), send=lambda t: None)
     assert out.at[0, "status"] == "missed"
+
+
+def test_youtube_rules_off_by_default_and_work_when_on():
+    assert not (C.TREND_FILTER or C.NO_TRADE_ZONE or C.WAIT_FOR_RETEST or C.ITM_STEPS)
+    s = {"rvol": 2, "price": 101, "box_high": 100.5, "box_low": 99, "vwap": 100.2, "move_pct": 1,
+         "y_high": 102, "y_low": 98, "retest_up": False, "retest_down": False}
+    assert skill.side_for(s, "down") == "call"                 # all off: same as before
+    old = C.TREND_FILTER, C.NO_TRADE_ZONE, C.WAIT_FOR_RETEST
+    try:
+        C.TREND_FILTER = True
+        assert skill.side_for(s, "down") is None and skill.side_for(s, "up") == "call"
+        assert skill.side_for(s, None) == "call"               # unknown trend: don't block
+        C.NO_TRADE_ZONE = True
+        assert skill.side_for(s, "up") is None                 # still under yesterday's high
+        s["y_high"] = 100.8
+        assert skill.side_for(s, "up") == "call"
+        C.WAIT_FOR_RETEST = True
+        assert skill.side_for(s, "up") is None
+        s["retest_up"] = True
+        assert skill.side_for(s, "up") == "call"
+    finally:
+        C.TREND_FILTER, C.NO_TRADE_ZONE, C.WAIT_FOR_RETEST = old
+
+
+def test_retest_and_trend_line():
+    f = lambda closes, lows: pd.DataFrame({"Close": closes, "Low": lows, "High": [c + 0.1 for c in closes]})
+    assert skill._retest(f([101, 100.1, 101.5], [100.8, 100.0, 101.2]), 100, 1)     # broke, came back, went again
+    assert not skill._retest(f([101, 102, 103], [100.8, 101.5, 102.5]), 100, 1)     # never came back
+    days = pd.bdate_range("2026-01-01", periods=210)
+    up = pd.Series(range(210), index=days, dtype=float)
+    assert data.trend_on(up, days[-1]) == "up"
+    assert data.trend_on(up[::-1].set_axis(days), days[-1]) == "down"
+    assert data.trend_on(up.head(50), days[49]) is None        # not enough days: unknown
+
+
+def test_in_the_money_strike():
+    df = pd.DataFrame({"contractSymbol": ["A", "B", "C"], "strike": [99, 100, 101],
+                       "bid": [2.0, 1.4, 1.0], "ask": [2.1, 1.5, 1.05], "openInterest": [900] * 3})
+    assert ticket.pick_strike(df, 100.2, "call")["contractSymbol"] == "B"
+    old = C.ITM_STEPS
+    try:
+        C.ITM_STEPS = 1
+        assert ticket.pick_strike(df, 100.2, "call")["contractSymbol"] == "B"   # 100 is just below 100.2
+        assert ticket.pick_strike(df, 100.2, "put")["contractSymbol"] == "C"
+    finally:
+        C.ITM_STEPS = old
 
 
 if __name__ == "__main__":

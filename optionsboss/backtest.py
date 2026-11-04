@@ -39,6 +39,9 @@ def replay(setup, bars, ts):
         return None
     step = 1 if setup["price"] < 200 else 5
     k = round(setup["price"] / step) * step
+    if C.ITM_STEPS:                                           # one step "in the money"
+        k = (math.ceil(setup["price"] / step) - C.ITM_STEPS) * step if setup["side"] == "call" \
+            else (math.floor(setup["price"] / step) + C.ITM_STEPS) * step
     expiry = day + pd.Timedelta(days=days_to_friday(day), hours=16)
     years = lambda t: (expiry - t).total_seconds() / (365 * 86400)
     buy = fair_price(setup["side"], setup["price"], k, years(ts), vol) * (1 + HALF_SPREAD)
@@ -57,15 +60,19 @@ def replay(setup, bars, ts):
     return (status or "time", buy, sell) if sell is not None else None
 
 
-def run(days=55):
-    market = data.intraday(data.load_stocks() + [C.MARKET_TICKER], period="60d")
+def run(days=55, market=None, closes=None):
+    if market is None:
+        market = data.intraday(data.load_stocks() + [C.MARKET_TICKER], period="60d")
     if C.MARKET_TICKER not in market:
         return [], "Couldn't get past prices from Yahoo."
+    if closes is None:
+        closes = data.daily(list(market), period="2y") if C.TREND_FILTER else {}
     all_days = sorted({i.normalize() for i in market[C.MARKET_TICKER].index})[-days:]
     trades = []
     for day in all_days[10:]:                                   # first 10 days only warm up "how busy"
         ts = day + pd.Timedelta(hours=10, minutes=30)
-        for setup in skill.find(market, ts):
+        trend = {t: data.trend_on(closes.get(t), day) for t in market}
+        for setup in skill.find(market, ts, trend):
             r = replay(setup, market[setup["ticker"]], ts)
             if r:
                 trades.append({"date": f"{day:%Y-%m-%d}", "ticker": setup["ticker"], "side": setup["side"],
@@ -106,7 +113,7 @@ def past_picks():
     return df.drop_duplicates(["date", "ticker"])
 
 
-def run_copied(picks=None, market=None, earnings=None):
+def run_copied(picks=None, market=None, earnings=None, closes=None):
     """How the copied day-trade picks would have done as Call tickets (ESTIMATED prices)."""
     picks = past_picks() if picks is None else picks
     if not len(picks):
@@ -115,6 +122,9 @@ def run_copied(picks=None, market=None, earnings=None):
         market = data.intraday(sorted(set(picks["ticker"])), period="60d")
     if not market:
         return [], "Couldn't get past prices from Yahoo."
+    if closes is None:
+        closes = data.daily(list(market), period="2y") if C.TREND_FILTER else {}
+    skipped_trend = 0
     first = min(b.index.min() for b in market.values()).normalize() + pd.Timedelta(days=30)   # warm-up for "how jumpy"
     trades, skipped = [], {"earnings": 0, "pricey_or_cost": 0, "never": 0}
     for day, rows in picks.groupby("date"):
@@ -148,6 +158,9 @@ def run_copied(picks=None, market=None, earnings=None):
             if C.SKIP_EARNINGS and ticket.earnings_before(dates, d, exp):
                 skipped["earnings"] += 1
                 continue
+            if C.TREND_FILTER and data.trend_on(closes.get(p["ticker"]), d) == "down":
+                skipped_trend += 1
+                continue
             r = replay({"price": price, "side": "call"}, market[p["ticker"]], check)
             if not r:
                 skipped["pricey_or_cost"] += 1
@@ -162,5 +175,5 @@ def run_copied(picks=None, market=None, earnings=None):
         df["pnl"] = [plain.pnl(t) for _, t in df.iterrows()]
         text += "\n" + "\n".join(plain.coach(df))
         text += (f"\n📅 Skipped for earnings: {skipped['earnings']} | 🕑 never reached the buy price: {skipped['never']}"
-                 f" | 💸 too expensive: {skipped['pricey_or_cost']}")
+                 f" | 💸 too expensive: {skipped['pricey_or_cost']} | 📉 below the 200-day line: {skipped_trend}")
     return trades, text

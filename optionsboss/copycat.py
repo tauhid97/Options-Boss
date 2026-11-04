@@ -82,7 +82,10 @@ def watch(df, ts, send):
         if bought_today(df, day) >= C.MAX_TICKETS_PER_DAY:
             df.loc[i, ["status", "note"]] = ["skipped", "we already have enough tickets today"]
             continue
-        t, why = ticket.choose({"ticker": row["ticker"], "side": "call", "price": price}, ts)
+        if C.TREND_FILTER and data.trend([row["ticker"]], ts).get(row["ticker"]) == "down":
+            t, why = None, "trend"
+        else:
+            t, why = ticket.choose({"ticker": row["ticker"], "side": "call", "price": price}, ts)
         if not t:
             df.loc[i, ["status", "note"]] = ["skipped", ticket.WHY[why]]
             send(plain.skipped(row, ticket.WHY[why]))
