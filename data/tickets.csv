@@ -2,7 +2,7 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-04,2026-11-04T10:46:00-05:00,Morning Breakout,MSFT,call,,,2026-11-06,552.5,MSFT261106C00552500,554.44,6.5,9.1,4.88,"MSFT is going UP today (+6.5%). It broke out the top of its morning box, and 4.8x more people than usual are trading it.",open,,,
 2026-11-04,2026-11-04T10:46:00-05:00,Morning Breakout,AAPL,call,,,2026-11-06,352.5,AAPL261106C00352500,353.74,2.27,3.18,1.7,"AAPL is going UP today (+6.6%). It broke out the top of its morning box, and 2.4x more people than usual are trading it.",open,,,
 2026-11-04,2026-11-04T11:26:00-05:00,VWAP Pullback,XYZ,call,buy_limit,86.69,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000"
-2026-11-04,2026-11-04T11:26:00-05:00,Oversold Bounce,CAT,call,buy_stop,609.46,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,
-2026-11-04,2026-11-04T11:26:00-05:00,Oversold Bounce,INTC,call,buy_stop,60.21,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,
-2026-11-04,2026-11-04T11:26:00-05:00,20-Day Breakout,LYFT,call,buy_stop,18.85,,,,,,,,It's about to jump over its highest price of the whole month.,waiting,,,
+2026-11-04,2026-11-04T11:26:00-05:00,Oversold Bounce,CAT,call,buy_stop,609.46,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price
+2026-11-04,2026-11-04T11:26:00-05:00,Oversold Bounce,INTC,call,buy_stop,60.21,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price
+2026-11-04,2026-11-04T11:26:00-05:00,20-Day Breakout,LYFT,call,buy_stop,18.85,,,,,,,,It's about to jump over its highest price of the whole month.,missed,,,never reached its buy price
 2026-11-04,2026-11-04T11:26:00-05:00,MA20 Reclaim,APP,call,buy_stop,271.71,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,skipped,,,the company reports earnings before the ticket ends (prices jump wildly)
