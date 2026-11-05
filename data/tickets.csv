@@ -8,3 +8,6 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-04,2026-11-04T11:26:00-05:00,MA20 Reclaim,APP,call,buy_stop,271.71,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,skipped,,,the company reports earnings before the ticket ends (prices jump wildly)
 2026-11-05,2026-11-05T11:08:00-05:00,Morning Breakout,NVDA,put,,,,,,,,,,"NVDA is going DOWN today (-9.0%). It broke out the bottom of its morning box, and 14.9x more people than usual are trading it.",skipped,,,tickets were too pricey right now (people expect big jumps)
 2026-11-05,2026-11-05T11:08:00-05:00,Morning Breakout,AMD,put,,,,,,,,,,"AMD is going DOWN today (-16.2%). It broke out the bottom of its morning box, and 4.7x more people than usual are trading it.",skipped,,,"no ticket was popular enough, close enough, and under $1,000"
+2026-11-05,2026-11-05T11:37:00-05:00,Oversold Bounce,CAT,call,buy_stop,585.7,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,
+2026-11-05,2026-11-05T11:37:00-05:00,Oversold Bounce,ASML,call,buy_stop,1443.49,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,
+2026-11-05,2026-11-05T11:37:00-05:00,Oversold Comeback,NRG,call,buy_stop,83.14,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,
