@@ -88,7 +88,7 @@ def find(market, ts, trend=None):
         if side and side == tide:
             found.append({"ticker": t, "side": side, "score": abs(s["move_pct"]) * s["rvol"], **s})
     found.sort(key=lambda f: -f["score"])
-    return found[:C.MAX_BREAKOUT_TICKETS]
+    return found[:min(C.MAX_BREAKOUT_TICKETS, C.MAX_PER_SKILL)]
 
 
 NAME = "Morning Breakout"

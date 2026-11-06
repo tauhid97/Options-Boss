@@ -9,18 +9,29 @@ Explained like you're 5:
 import pandas as pd
 
 from . import config as C
-from . import data, plain, ticket
+from . import coach, data, plain, ticket
+
+FINISHED = ["target", "stop", "time"]
+ORDER = {coach.TRUSTED: 0, coach.LEARNING: 1, coach.BENCHED: 2}
 
 
-def todays_picks(picks, day, have):
-    """The day-trade bot's picks for `day`, "live" skills first, minus stocks we already have."""
+def todays_picks(picks, day, have, marks=None):
+    """The day-trade bot's picks for `day`: "live" skills first, then ⭐ trusted, 🌱 learning, 🪑 benched;
+    at most MAX_PER_SKILL per skill, minus stocks we already have."""
     if picks is None or not len(picks) or "date" not in picks:
         return []
+    marks = marks or {}
     p = picks[picks["date"].astype(str) == day].copy()
     p = p[~p["ticker"].isin(have)].drop_duplicates("ticker")
     p["_live"] = (p.get("mode", "practice") == "live").astype(int)
-    p = p.sort_values("_live", ascending=False, kind="stable")
+    p["_grade"] = [ORDER[marks.get(s, coach.LEARNING)] for s in p["setup"]]
+    p = p.sort_values(["_live", "_grade"], ascending=[False, True], kind="stable")
+    p = p.groupby("setup", sort=False).head(C.MAX_PER_SKILL)
     return p.head(C.MAX_COPIED_PICKS).to_dict("records")
+
+
+def done_tickets(df):
+    return df[df["status"].isin(FINISHED)] if len(df) else df
 
 
 def to_row(pick, ts):
@@ -48,14 +59,22 @@ def copy(df, ts):
     """Adds today's day-trade picks as 'waiting' rows. Returns (df, new rows) - new rows is [] if none yet."""
     day = ts.strftime("%Y-%m-%d")
     have = set(df[df["date"] == day]["ticker"]) if len(df) else set()
-    rows = [to_row(p, ts) for p in todays_picks(data.day_trade_picks(), day, have)]
+    marks = coach.grades(done_tickets(df))
+    rows = [to_row(p, ts) for p in todays_picks(data.day_trade_picks(), day, have, marks)]
     if rows:
         df = pd.concat([df, pd.DataFrame(rows)], ignore_index=True) if len(df) else pd.DataFrame(rows)
     return df, rows
 
 
-def bought_today(df, day):
-    return int(((df["date"] == day) & df["status"].isin(["open", "target", "stop", "time"])).sum()) if len(df) else 0
+def bought_today(df, day, skill_name=None, style=None):
+    if not len(df):
+        return 0
+    m = (df["date"] == day) & df["status"].isin(["open"] + FINISHED)
+    if skill_name is not None:
+        m &= df["skill"] == skill_name
+    if style is not None:
+        m &= df["style"].fillna("full") == style if "style" in df else (style == "full")
+    return int(m.sum())
 
 
 def watch(df, ts, send):
@@ -73,6 +92,7 @@ def watch(df, ts, send):
         df.loc[waiting.index, ["status", "note"]] = ["missed", "never reached its buy price"]
         return df
     bars = data.intraday(sorted(set(waiting["ticker"])), period="5d")
+    marks = coach.grades(done_tickets(df))
     for i, row in waiting.iterrows():
         if row["ticker"] not in bars:
             continue
@@ -81,6 +101,9 @@ def watch(df, ts, send):
             continue
         if bought_today(df, day) >= C.MAX_TICKETS_PER_DAY:
             df.loc[i, ["status", "note"]] = ["skipped", "we already have enough tickets today"]
+            continue
+        if bought_today(df, day, row["skill"]) >= C.MAX_PER_SKILL:
+            df.loc[i, ["status", "note"]] = ["skipped", "this skill already has enough tickets today"]
             continue
         if C.TREND_FILTER and data.trend([row["ticker"]], ts).get(row["ticker"]) == "down":
             t, why = None, "trend"
@@ -92,6 +115,10 @@ def watch(df, ts, send):
             continue
         for k, v in t.items():
             df.at[i, k] = v
+        grade = marks.get(row["skill"], coach.LEARNING)
+        full = grade != coach.BENCHED and bought_today(df, day, style="full") < C.FULL_TICKETS_PER_DAY
         df.at[i, "status"], df.at[i, "sent_at"] = "open", ts.isoformat()
-        send(plain.buy_now(t, row["skill"], row["reason"], ts))
+        df.at[i, "style"] = "full" if full else "short"
+        send(plain.buy_now(t, row["skill"], row["reason"], ts) if full
+             else plain.short_line(t, row["skill"], coach.BADGE[grade] if grade != coach.LEARNING else ""))
     return df

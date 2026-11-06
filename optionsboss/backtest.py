@@ -131,9 +131,9 @@ def run_copied(picks=None, market=None, earnings=None, closes=None):
         d = pd.Timestamp(day).tz_localize(C.TIMEZONE)
         if d < first:
             continue
-        bought = 0
+        bought, per_skill = 0, {}
         hits = []
-        for p in rows.head(C.MAX_COPIED_PICKS).to_dict("records"):
+        for p in rows.groupby("setup", sort=False).head(C.MAX_PER_SKILL).head(C.MAX_COPIED_PICKS).to_dict("records"):
             bars = market.get(p["ticker"])
             if bars is None or not (bars.index.normalize() == d).any():
                 continue
@@ -153,6 +153,8 @@ def run_copied(picks=None, market=None, earnings=None, closes=None):
         for check, price, p in sorted(hits, key=lambda h: h[0]):
             if bought >= C.MAX_TICKETS_PER_DAY:
                 break
+            if per_skill.get(p["setup"], 0) >= C.MAX_PER_SKILL:
+                continue
             exp = d.tz_localize(None) + pd.Timedelta(days=days_to_friday(d))
             dates = earnings(p["ticker"]) if earnings else data.earnings_dates(p["ticker"])
             if C.SKIP_EARNINGS and ticket.earnings_before(dates, d, exp):
@@ -166,6 +168,7 @@ def run_copied(picks=None, market=None, earnings=None, closes=None):
                 skipped["pricey_or_cost"] += 1
                 continue
             bought += 1
+            per_skill[p["setup"]] = per_skill.get(p["setup"], 0) + 1
             trades.append({"date": day, "ticker": p["ticker"], "skill": p["setup"], "side": "call",
                            "status": r[0], "buy_price": r[1], "sell_price": r[2]})
     n_days = len({t["date"] for t in trades})

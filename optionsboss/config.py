@@ -20,14 +20,16 @@ NIGHT_REPORT_AFTER = "16:15"   # nightly report card
 # --- How it picks (the "Morning Breakout" skill) ---
 MIN_MOVE_PCT = 0.5             # stock must be up/down at least 0.5% from yesterday's close
 MIN_RVOL = 1.0                 # and trading at least as busy as usual
-MAX_BREAKOUT_TICKETS = 2       # Morning Breakout gives at most 2 tickets a day
-MAX_TICKETS_PER_DAY = 4        # all skills together: at most 4 tickets bought a day
+MAX_BREAKOUT_TICKETS = 3       # Morning Breakout gives at most 3 tickets a day
+MAX_PER_SKILL = 3              # each skill: at most 3 practice tickets a day (more practice = learns faster)
+MAX_TICKETS_PER_DAY = 12       # all skills together: at most 12 practice tickets a day
+FULL_TICKETS_PER_DAY = 4       # only the first 4 get the full Robinhood steps; the rest are short one-liners
 
 # --- The day-trade bot's skills (Options Boss copies its daily picks) ---
 PICKS_URL = "https://raw.githubusercontent.com/tauhid97/day-trade-picks/main/data/picks.csv"
 COPY_FROM = "11:00"            # look for the day-trade bot's picks from here...
 COPY_UNTIL = "13:00"           # ...until here
-MAX_COPIED_PICKS = 5           # watch at most 5 of its picks a day ("live" ones first)
+MAX_COPIED_PICKS = 15          # watch at most 15 of its picks a day (3 per skill, "live" ones first)
 BUY_BY = "14:00"               # if a stock never reaches its buy price by 2 pm, skip it
 
 # --- Which ticket (option) to choose ---
@@ -54,3 +56,11 @@ NO_TRADE_ZONE = False          # skip a breakout still stuck inside yesterday's 
 WAIT_FOR_RETEST = False        # wait for it to break out, come back to the box edge, and go again
 RETEST_NEAR_PCT = 0.15         # "came back" = within 0.15% of the box edge
 ITM_STEPS = 0                  # 1 = pick the strike one step "in the money" (melts slower, costs more)
+
+# --- 🧑‍🏫 Coach: quick to bench, slow to trust (same idea as the day-trade bot, 2026-11-05) ---
+# Score = R: 1R = what the stop would lose (25% of the ticket + fees). Looks at each skill's last 10 tickets.
+COACH_LAST = 10
+BENCH_AFTER = 3                # after just 3 tickets averaging below -0.10R -> 🪑 benched
+BENCH_BELOW = -0.10            #   (benched tickets are still tracked, but sent as short one-liners, never first)
+TRUST_AFTER = 5                # needs 5 tickets averaging above +0.10R -> ⭐ trusted (still PRACTICE!)
+TRUST_ABOVE = 0.10

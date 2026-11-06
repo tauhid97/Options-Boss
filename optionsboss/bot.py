@@ -5,11 +5,11 @@ import os
 import pandas as pd
 
 from . import config as C
-from . import copycat, data, plain, skill, ticket
+from . import coach, copycat, data, plain, skill, ticket
 from .notify import send
 
 COLS = ["date", "sent_at", "skill", "ticker", "side", "wait_type", "wait_price", "expiry", "strike", "symbol",
-        "stock_price", "buy_price", "target", "stop", "reason", "status", "sell_price", "sold_at", "note"]
+        "stock_price", "buy_price", "target", "stop", "reason", "status", "sell_price", "sold_at", "note", "style"]
 FINISHED = ["target", "stop", "time"]
 # other statuses: "waiting" (stock hasn't reached its buy price yet), "open" (bought, on paper),
 # "skipped" (a safety skill said no), "missed" (never reached its buy price by 2 pm)
@@ -22,7 +22,7 @@ def now():
 def load_tickets():
     if os.path.exists(C.TICKETS_FILE):
         df = pd.read_csv(C.TICKETS_FILE, dtype={c: "object" for c in
-                         ["status", "sold_at", "note", "skill", "wait_type", "symbol", "expiry", "sent_at"]})
+                         ["status", "sold_at", "note", "skill", "wait_type", "symbol", "expiry", "sent_at", "style"]})
         df["skill"] = df["skill"].fillna(skill.NAME)
         return df
     return pd.DataFrame(columns=COLS)
@@ -52,18 +52,23 @@ def scan(ts=None, force=False):
     if not market or max(b.index.max() for b in market.values()).normalize() != ts.normalize():
         print("No market data for today (holiday or data down).")
         return
-    picked, rows = [], []
+    picked, short, rows = [], [], []
+    grade = coach.grade(df[df["status"].isin(FINISHED)] if len(df) else df, skill.NAME)
     trend = data.trend(list(market), ts) if C.TREND_FILTER else None
     for setup in skill.find(market, ts, trend):
         t, why = ticket.choose(setup, ts)
         base = {"date": ts.strftime("%Y-%m-%d"), "sent_at": ts.isoformat(), "skill": skill.NAME,
                 "ticker": setup["ticker"], "side": setup["side"], "reason": skill.reason(setup)}
         if t:
-            picked.append((t, base["reason"]))
-            rows.append({**base, "status": "open", **t})
+            full = grade != coach.BENCHED and len(picked) < C.FULL_TICKETS_PER_DAY
+            if full:
+                picked.append((t, base["reason"]))
+            else:
+                short.append((t, coach.BADGE[grade] if grade != coach.LEARNING else ""))
+            rows.append({**base, "status": "open", "style": "full" if full else "short", **t})
         else:
             rows.append({**base, "status": "skipped", "note": ticket.WHY[why]})
-    text = plain.morning(picked, ts, [r for r in rows if r["status"] == "skipped"])
+    text = plain.morning(picked, ts, [r for r in rows if r["status"] == "skipped"], short)
     print(text)
     send(text)
     if rows:

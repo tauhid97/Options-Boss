@@ -85,6 +85,15 @@ def ticket_lines(i, t, reason, skill_name=None):
     ]
 
 
+def short_line(t, skill_name, badge=""):
+    """An extra practice ticket as ONE short line (so Telegram stays easy to read)."""
+    kind = "Call" if t["side"] == "call" else "Put"
+    tag = f" {badge}" if badge else ""
+    return (f"⚡ Extra practice: {t['ticker']} {kind} {strike(t['strike'])}, ends {day(t['expiry'])}. "
+            f"Pretend buy {money(t['buy_price'])}, win {money(t['target'])} / stop {money(t['stop'])} "
+            f"({skill_name}{tag})")
+
+
 def _when(ts):
     return f"{ts:%a %b} {ts.day} (sent {ts:%I:%M %p} ET)".replace(" 0", " ")
 
@@ -92,16 +101,19 @@ def _when(ts):
 LATE = "(Prices are from Yahoo and can be about 15 minutes late. Check the app's price.)"
 
 
-def morning(tickets, ts, skipped=()):
+def morning(tickets, ts, skipped=(), short=()):
+    """tickets = [(ticket, why)] with full steps; short = [(ticket, badge)] as one-liners."""
     lines = [f"🌞 {C.BRAND_NAME} - {_when(ts)}", ""]
-    if not tickets:
+    if not tickets and not short:
         lines += ["No Morning Breakout tickets right now. Nothing was clear enough. 👍", ""]
     for i, (t, why) in enumerate(tickets, 1):
         lines += ticket_lines(i, t, why, "Morning Breakout")
+    if short:
+        lines += [short_line(t, "Morning Breakout", b) for t, b in short] + [""]
     for r in skipped:
         lines += [f"🙅 Skipped {r['ticker']}: {r['note']}.", ""]
     lines += ["Around 11:30 I'll also check the day-trade bot's picks. 👀"]
-    if tickets:
+    if tickets or short:
         lines += [LATE]
     return "\n".join(lines)
 
@@ -112,7 +124,8 @@ def watching(rows):
     for r in rows:
         how = "dips to" if r["wait_type"] == "buy_limit" else "climbs to"
         lines.append(f"• {name(r['ticker'])}, if it {how} {price(r['wait_price'])} ({r['skill']})")
-    lines += ["", "If one gets there before 2 pm, I'll send you a Call ticket with the Robinhood steps."]
+    lines += ["", "If one gets there before 2 pm, I'll send you a Call ticket. The first few get the Robinhood "
+              "steps, extra practice ones come as short one-liners."]
     return "\n".join(lines)
 
 
@@ -138,6 +151,8 @@ def closed(t):
     kind = "Call" if t["side"] == "call" else "Put"
     p = pnl(t)
     face = "won" if p > 0 else "lost"
+    if t.get("style") == "short":
+        return f"🔔 {t['ticker']} {kind} (extra practice) {HOW.get(t['status'], 'ended')}: {face} {money(abs(p))}"
     return (f"🔔 {t['ticker']} {kind} {HOW.get(t['status'], 'ended')}\n"
             f"Bought {money(t['buy_price'])}, sold {money(t['sell_price'])}.\n"
             f"We {face} {money(abs(p))} (pretend money, 1 contract). Practice only!")
@@ -166,14 +181,19 @@ def coach(done):
     """🧑‍🏫 Coach: how each skill is doing with option tickets."""
     if not len(done):
         return ["🧑‍🏫 Coach: no finished tickets yet, so no skill grades."]
+    from . import coach as rules
     lines = ["🧑‍🏫 Coach (each skill's score):"]
     rows = []
+    marks = rules.grades(done)
     for sk, g in done.groupby(done["skill"].fillna("Morning Breakout")):
         total = today_total(g)
         wins = sum(pnl(t) > 0 for _, t in g.iterrows())
         rows.append((total, f"{'🟢' if total > 0 else '🔴'} {sk}: {len(g)} ticket{'s' if len(g) > 1 else ''}, "
-                            f"{wins} won, {'+' if total >= 0 else '-'}{money(abs(total))}"))
+                            f"{wins} won, {'+' if total >= 0 else '-'}{money(abs(total))} "
+                            f"({rules.BADGE[marks.get(sk, rules.LEARNING)]})"))
     lines += [r for _, r in sorted(rows, reverse=True)]
+    lines += ["🪑 = lost after 3+ tickets (short one-liners, last in line). ⭐ = won after 5+ (first in line). "
+              "All still PRACTICE."]
     return lines
 
 
