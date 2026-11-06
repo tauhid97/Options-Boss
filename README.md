@@ -10,12 +10,12 @@ Options Boss has two ways to find tickets:
 1. **Morning Breakout** (its own skill, ~10:30 am New York time): if a big, busy stock (SPY, QQQ,
    Apple, Tesla...) breaks out of its "morning box" (the first 30 minutes) with lots of people
    trading it, and the whole market is going the same way, it sends a **Call** (going up) or a
-   **Put** (going down). At most 2 a day.
+   **Put** (going down). At most 3 a day.
 2. **Day-trade skills** (~11:30 am): it copies the picks of Boss's day-trade bot (all of its skills,
    and any new ones it learns). It **waits** until the stock reaches the pick's buy price, then sends
    a **Call** ticket. If the stock never gets there by 2 pm, it skips it.
 
-At most **4 tickets a day** in total, each with the exact buttons to tap in Robinhood.
+At most **12 practice tickets a day** in total (3 per skill). The first 4 come with the exact buttons to tap in Robinhood.
 
 ### The option safety skills (every ticket must pass all 4)
 
@@ -28,6 +28,17 @@ At most **4 tickets a day** in total, each with the exact buttons to tap in Robi
 
 And the **🧑‍🏫 Coach** keeps a separate score for every skill (in the night report, on the page,
 and with `/skills`).
+
+### Learning faster (added 2026-11-05, same idea as the day-trade bot)
+
+- **More practice:** each skill can make up to **3 tickets a day**, up to **12 a day** in total.
+- **Telegram stays readable:** only the first **4** tickets come with the full Robinhood steps.
+  The extra ones are **short one-liners** (⚡ Extra practice ...).
+- **Quick to bench, slow to trust** (the Coach looks at each skill's last 10 tickets):
+  - 🪑 **Benched:** after just **3** tickets that lost on average. It keeps practicing, but only as one-liners, last in line.
+  - ⭐ **Trusted:** needs **5** tickets that won on average. Its tickets go first in line.
+  - 🌱 **Learning:** everyone else.
+- Trusted still means **PRACTICE**. Real money needs 2-3 months of good live results first.
 
 **It never trades. It never uses real money.** Everything is PRACTICE: follow the steps, but
 **stop at Review, don't swipe up.** We watch 2-3 months of live results before even thinking

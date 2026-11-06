@@ -7,7 +7,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from optionsboss import backtest, bot, copycat, data, plain, skill, ticket
+from optionsboss import backtest, bot, coach, copycat, data, plain, skill, ticket
 from optionsboss import config as C
 
 NY = C.TIMEZONE
@@ -264,6 +264,58 @@ def test_in_the_money_strike():
         assert ticket.pick_strike(df, 100.2, "put")["contractSymbol"] == "C"
     finally:
         C.ITM_STEPS = old
+
+
+def _done(skill_name, sells, buy=1.0):
+    return pd.DataFrame({"skill": [skill_name] * len(sells), "buy_price": [buy] * len(sells), "sell_price": sells,
+                         "sold_at": [f"2026-11-0{i + 1}T12:00" for i in range(len(sells))]})
+
+
+def test_coach_quick_to_bench_slow_to_trust():
+    assert coach.grade(_done("A", [0.75, 0.75]), "A") == "learning"            # 2 losses: too early to judge
+    assert coach.grade(_done("A", [0.75, 0.75, 1.10]), "A") == "benched"       # 3 tickets, average below -0.10R
+    assert coach.grade(_done("A", [1.40, 1.40, 1.40, 1.40]), "A") == "learning"  # 4 wins: not trusted yet
+    assert coach.grade(_done("A", [1.40, 1.40, 1.40, 1.40, 0.75]), "A") == "trusted"  # 5 tickets, above +0.10R
+    assert round(coach.r_of({"buy_price": 1.0, "sell_price": 0.75}), 2) == -1.0  # the stop = about -1R
+    assert coach.grade(_done("A", [0.75] * 5 + [1.40] * 10), "A") == "trusted"
+    assert "🪑 benched" in "\n".join(plain.coach(_done("A", [0.75, 0.75, 0.75])))
+
+
+def test_up_to_3_picks_per_skill_and_benched_last():
+    picks = pd.DataFrame({"date": ["2026-11-03"] * 6, "mode": ["practice"] * 6,
+                          "ticker": ["A", "B", "C", "D", "E", "F"],
+                          "setup": ["Bull Flag"] * 4 + ["Gap & Go", "MA20 Reclaim"],
+                          "order_type": ["buy_stop"] * 6, "entry": [1.0] * 6})
+    got = copycat.todays_picks(picks, "2026-11-03", set(), {"Bull Flag": "benched", "MA20 Reclaim": "trusted"})
+    assert [p["ticker"] for p in got] == ["F", "E", "A", "B", "C"]             # trusted, learning, then 3 benched
+
+
+def test_extra_tickets_are_short_one_liners():
+    sent = []
+    day = "2026-11-03"
+    rows = [{"date": day, "ticker": f"T{i}", "status": "waiting", "wait_type": "buy_stop", "wait_price": 1.0,
+             "sent_at": "2026-11-03T11:30:00-05:00", "skill": f"Skill {i % 3}", "reason": "x", "note": None}
+            for i in range(14)]
+    df = pd.DataFrame(rows)
+    t = pd.date_range("2026-11-03 11:30", periods=6, freq="5min", tz=NY)
+    bars = pd.DataFrame({"Open": 1.0, "High": 1.2, "Low": 0.9, "Close": 1.1, "Volume": 1}, index=t)
+    old = copycat.data.intraday, copycat.ticket.choose
+    try:
+        copycat.data.intraday = lambda tickers, **k: {x: bars for x in tickers}
+        copycat.ticket.choose = lambda s, ts: ({"ticker": s["ticker"], "side": "call", "expiry": "2026-11-06",
+                                                "strike": 1.0, "buy_price": 0.2, "target": 0.28, "stop": 0.15}, None)
+        out = copycat.watch(df, pd.Timestamp("2026-11-03 12:15", tz=NY), sent.append)
+    finally:
+        copycat.data.intraday, copycat.ticket.choose = old
+    opened = out[out["status"] == "open"]
+    assert len(opened) == 9                                   # 3 skills x 3 tickets each
+    assert (opened["style"] == "full").sum() == C.FULL_TICKETS_PER_DAY
+    assert sum("TICKET 1" in m for m in sent) == 4 and sum(m.startswith("⚡ Extra practice") for m in sent) == 5
+    assert set(out[out["status"] == "skipped"]["note"]) == {"this skill already has enough tickets today"}
+    short = opened[opened["style"] == "short"].iloc[0].to_dict()
+    short.update(status="target", sell_price=0.3)
+    assert "(extra practice) reached the win price" in plain.closed(short)
+    assert len(plain.closed(short).splitlines()) == 1
 
 
 if __name__ == "__main__":
