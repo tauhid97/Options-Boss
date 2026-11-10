@@ -44,3 +44,9 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-09,2026-11-09T11:38:00-05:00,20-Day Breakout,BBY,call,buy_stop,106.46,,,,,,,,It's about to jump over its highest price of the whole month.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-09,2026-11-09T11:38:00-05:00,20-Day Breakout,TGT,call,buy_stop,166.5,,,,,,,,It's about to jump over its highest price of the whole month.,missed,,,never reached its buy price,
 2026-11-10,2026-11-10T10:37:00-05:00,Morning Breakout,AAPL,put,,,2026-11-13,347.5,AAPL261113P00347500,347.14,4.1,5.74,3.07,"AAPL is going DOWN today (-1.0%). It broke out the bottom of its morning box, and 1.2x more people than usual are trading it.",open,,,,full
+2026-11-10,2026-11-10T11:26:00-05:00,Oversold Bounce,NVDA,call,buy_stop,174.66,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
+2026-11-10,2026-11-10T11:26:00-05:00,ORB Stocks in Play,AMD,call,buy_stop,535.14,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
+2026-11-10,2026-11-10T11:26:00-05:00,ORB Stocks in Play,IONQ,call,buy_stop,35.43,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
+2026-11-10,2026-11-10T11:26:00-05:00,NR7 Breakout,UNH,call,buy_stop,401.64,,,,,,,,"It barely moved yesterday, like a squished spring. Springs jump.",waiting,,,,
+2026-11-10,2026-11-10T11:26:00-05:00,Oversold Bounce,CAT,call,buy_stop,584.3,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
+2026-11-10,2026-11-10T11:26:00-05:00,Relative Strength,TTD,call,buy_stop,15.55,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
