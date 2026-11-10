@@ -43,3 +43,4 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-09,2026-11-09T11:38:00-05:00,MA20 Reclaim,ANET,call,buy_stop,187.76,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,missed,,,never reached its buy price,
 2026-11-09,2026-11-09T11:38:00-05:00,20-Day Breakout,BBY,call,buy_stop,106.46,,,,,,,,It's about to jump over its highest price of the whole month.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-09,2026-11-09T11:38:00-05:00,20-Day Breakout,TGT,call,buy_stop,166.5,,,,,,,,It's about to jump over its highest price of the whole month.,missed,,,never reached its buy price,
+2026-11-10,2026-11-10T10:37:00-05:00,Morning Breakout,AAPL,put,,,2026-11-13,347.5,AAPL261113P00347500,347.14,4.1,5.74,3.07,"AAPL is going DOWN today (-1.0%). It broke out the bottom of its morning box, and 1.2x more people than usual are trading it.",open,,,,full
