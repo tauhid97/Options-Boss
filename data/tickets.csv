@@ -63,9 +63,9 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-11,2026-11-11T12:41:00-05:00,MA20 Reclaim,TSM,call,buy_stop,415.26,2026-11-13,417.5,TSM261113C00417500,416.46,5.7,7.98,4.28,It climbed back above its 'normal' line. Buyers are back.,stop,4.1,2026-11-11T14:41:30.340175-05:00,,short
 2026-11-12,2026-11-12T11:09:00-05:00,Morning Breakout,AMD,call,,,2026-11-16,600.0,AMD261116C00600000,579.34,7.5,10.5,5.62,"AMD is going UP today (+4.8%). It broke out the top of its morning box, and 1.5x more people than usual are trading it.",target,10.65,2026-11-12T12:10:37.065437-05:00,,full
 2026-11-12,2026-11-12T11:09:00-05:00,Morning Breakout,GOOGL,call,,,2026-11-16,297.5,GOOGL261116C00297500,298.18,3.3,4.62,2.47,"GOOGL is going UP today (+1.6%). It broke out the top of its morning box, and 2.6x more people than usual are trading it.",target,4.95,2026-11-12T12:10:37.065437-05:00,,full
-2026-11-12,2026-11-12T11:34:00-05:00,ORB Stocks in Play,TSLA,call,buy_stop,396.21,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
-2026-11-12,2026-11-12T11:34:00-05:00,NR7 Breakout,CLF,call,buy_stop,13.66,,,,,,,,"It barely moved yesterday, like a squished spring. Springs jump.",waiting,,,,
-2026-11-12,2026-11-12T11:34:00-05:00,ORB Stocks in Play,AAPL,call,buy_stop,359.38,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
-2026-11-12,2026-11-12T11:34:00-05:00,Gap-Down Bounce,BABA,call,buy_stop,95.93,,,,,,,,It fell off a cliff overnight and is bouncing back up.,waiting,,,,
+2026-11-12,2026-11-12T11:34:00-05:00,ORB Stocks in Play,TSLA,call,buy_stop,396.21,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",missed,,,never reached its buy price,
+2026-11-12,2026-11-12T11:34:00-05:00,NR7 Breakout,CLF,call,buy_stop,13.66,,,,,,,,"It barely moved yesterday, like a squished spring. Springs jump.",missed,,,never reached its buy price,
+2026-11-12,2026-11-12T11:34:00-05:00,ORB Stocks in Play,AAPL,call,buy_stop,359.38,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",missed,,,never reached its buy price,
+2026-11-12,2026-11-12T11:34:00-05:00,Gap-Down Bounce,BABA,call,buy_stop,95.93,,,,,,,,It fell off a cliff overnight and is bouncing back up.,missed,,,never reached its buy price,
 2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,AVGO,call,buy_limit,362.26,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
-2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,JNJ,call,buy_limit,283.28,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
+2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,JNJ,call,buy_limit,283.28,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",missed,,,never reached its buy price,
