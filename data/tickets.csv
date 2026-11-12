@@ -67,5 +67,5 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-12,2026-11-12T11:34:00-05:00,NR7 Breakout,CLF,call,buy_stop,13.66,,,,,,,,"It barely moved yesterday, like a squished spring. Springs jump.",waiting,,,,
 2026-11-12,2026-11-12T11:34:00-05:00,ORB Stocks in Play,AAPL,call,buy_stop,359.38,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
 2026-11-12,2026-11-12T11:34:00-05:00,Gap-Down Bounce,BABA,call,buy_stop,95.93,,,,,,,,It fell off a cliff overnight and is bouncing back up.,waiting,,,,
-2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,AVGO,call,buy_limit,362.26,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
+2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,AVGO,call,buy_limit,362.26,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-12,2026-11-12T11:34:00-05:00,VWAP Pullback,JNJ,call,buy_limit,283.28,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
