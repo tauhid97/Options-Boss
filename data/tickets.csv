@@ -75,4 +75,4 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-13,2026-11-13T11:28:00-05:00,ORB Stocks in Play,GME,call,buy_stop,26.48,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
 2026-11-13,2026-11-13T11:28:00-05:00,ORB Stocks in Play,MSFT,call,buy_stop,523.58,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-13,2026-11-13T11:33:00-05:00,Relative Strength,NU,call,buy_stop,13.16,2026-11-20,13.0,NU261120C00013000,13.16,0.4,0.56,0.3,It's going UP while the rest of the market isn't.,open,,,,full
-2026-11-13,2026-11-13T11:28:00-05:00,VWAP Pullback,UPS,call,buy_limit,111.67,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
+2026-11-13,2026-11-13T13:28:00-05:00,VWAP Pullback,UPS,call,buy_limit,111.67,2026-11-20,105.0,UPS261120C00105000,111.99,7.2,10.08,5.4,"It's having a good day and dipped to its average price, like a sale.",open,,,,short
