@@ -84,4 +84,11 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-16,2026-11-16T11:22:00-05:00,Oversold Bounce,COIN,call,buy_stop,122.99,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-17,2026-11-17T10:55:00-05:00,Morning Breakout,QQQ,put,,,2026-11-19,645.0,QQQ261119P00645000,647.31,5.44,7.62,4.08,"QQQ is going DOWN today (-2.2%). It broke out the bottom of its morning box, and 5.3x more people than usual are trading it.",open,,,,full
 2026-11-17,2026-11-17T10:55:00-05:00,Morning Breakout,NVDA,put,,,,,,,,,,"NVDA is going DOWN today (-3.6%). It broke out the bottom of its morning box, and 2.3x more people than usual are trading it.",skipped,,,the company reports earnings before the ticket ends (prices jump wildly),
-2026-11-17,2026-11-17T10:55:00-05:00,Morning Breakout,SPY,put,,,2026-11-19,730.0,SPY261119P00730000,727.53,4.7,6.58,3.53,"SPY is going DOWN today (-1.7%). It broke out the bottom of its morning box, and 2.6x more people than usual are trading it.",open,,,,full
+2026-11-17,2026-11-17T10:55:00-05:00,Morning Breakout,SPY,put,,,2026-11-19,730.0,SPY261119P00730000,727.53,4.7,6.58,3.53,"SPY is going DOWN today (-1.7%). It broke out the bottom of its morning box, and 2.6x more people than usual are trading it.",target,6.66,2026-11-17T11:52:49.237038-05:00,,full
+2026-11-17,2026-11-17T11:34:00-05:00,Oversold Comeback,BABA,call,buy_stop,88.51,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Beaten-Down Turnaround,KGC,call,buy_stop,20.63,,,,,,,,It's been losing for months and is starting to bounce back.,waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Beaten-Down Turnaround,GOOGL,call,buy_stop,284.1,,,,,,,,It's been losing for months and is starting to bounce back.,waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Relative Strength,NOC,call,buy_stop,556.5,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,BIDU,call,buy_stop,73.35,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,INTC,call,buy_stop,55.22,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
+2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,SE,call,buy_stop,71.32,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
