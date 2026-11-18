@@ -93,17 +93,17 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,INTC,call,buy_stop,55.22,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,SE,call,buy_stop,71.32,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-18,2026-11-18T11:08:00-05:00,Morning Breakout,NVDA,put,,,2026-11-20,152.5,NVDA261120P00152500,152.29,3.7,5.18,2.78,"NVDA is going DOWN today (-2.0%). It broke out the bottom of its morning box, and 2.3x more people than usual are trading it.",open,,,,full
-2026-11-18,2026-11-18T11:35:00-05:00,Oversold Comeback,BIDU,call,buy_stop,71.51,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
-2026-11-18,2026-11-18T11:35:00-05:00,ORB Stocks in Play,IBM,call,buy_stop,232.86,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
+2026-11-18,2026-11-18T11:35:00-05:00,Oversold Comeback,BIDU,call,buy_stop,71.51,,,,,,,,It got knocked down hard yesterday and is climbing back today.,missed,,,never reached its buy price,
+2026-11-18,2026-11-18T11:35:00-05:00,ORB Stocks in Play,IBM,call,buy_stop,232.86,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",missed,,,never reached its buy price,
 2026-11-18,2026-11-18T12:15:00-05:00,NR7 Breakout,AMZN,call,buy_stop,264.88,2026-11-20,265.0,AMZN261120C00265000,264.99,4.05,5.67,3.04,"It barely moved yesterday, like a squished spring. Springs jump.",open,,,,full
-2026-11-18,2026-11-18T11:35:00-05:00,Beaten-Down Turnaround,AA,call,buy_stop,36.63,,,,,,,,It's been losing for months and is starting to bounce back.,waiting,,,,
+2026-11-18,2026-11-18T11:35:00-05:00,Beaten-Down Turnaround,AA,call,buy_stop,36.63,,,,,,,,It's been losing for months and is starting to bounce back.,missed,,,never reached its buy price,
 2026-11-18,2026-11-18T13:06:00-05:00,Beaten-Down Turnaround,AVGO,call,buy_stop,351.89,2026-11-20,350.0,AVGO261120C00350000,350.83,9.3,13.02,6.98,It's been losing for months and is starting to bounce back.,open,,,,short
 2026-11-18,2026-11-18T11:35:00-05:00,Relative Strength,TGT,call,buy_stop,169.89,,,,,,,,It's going UP while the rest of the market isn't.,skipped,,,the company reports earnings before the ticket ends (prices jump wildly),
-2026-11-18,2026-11-18T11:35:00-05:00,Oversold Bounce,CRM,call,buy_stop,193.51,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
-2026-11-18,2026-11-18T11:35:00-05:00,Oversold Bounce,FCX,call,buy_stop,52.64,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
+2026-11-18,2026-11-18T11:35:00-05:00,Oversold Bounce,CRM,call,buy_stop,193.51,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
+2026-11-18,2026-11-18T11:35:00-05:00,Oversold Bounce,FCX,call,buy_stop,52.64,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-18,2026-11-18T11:35:00-05:00,VWAP Pullback,PANW,call,buy_limit,324.32,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,the company reports earnings before the ticket ends (prices jump wildly),
 2026-11-18,2026-11-18T12:15:00-05:00,Relative Strength,NKE,call,buy_stop,36.7,2026-11-20,37.0,NKE261120C00037000,36.69,0.47,0.66,0.35,It's going UP while the rest of the market isn't.,open,,,,full
 2026-11-18,2026-11-18T11:35:00-05:00,MA20 Reclaim,BBY,call,buy_stop,100.97,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
-2026-11-18,2026-11-18T11:35:00-05:00,MA20 Reclaim,SNAP,call,buy_stop,5.62,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,waiting,,,,
-2026-11-18,2026-11-18T11:35:00-05:00,VWAP Pullback,DLTR,call,buy_limit,139.9,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
-2026-11-18,2026-11-18T12:15:00-05:00,Bull Flag,GME,call,buy_stop,26.48,2026-11-20,26.5,GME261120C00026500,26.57,0.47,0.66,0.35,"It shot up like a rocket, rested, and is ready to take off again.",open,,,,full
+2026-11-18,2026-11-18T11:35:00-05:00,MA20 Reclaim,SNAP,call,buy_stop,5.62,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,missed,,,never reached its buy price,
+2026-11-18,2026-11-18T11:35:00-05:00,VWAP Pullback,DLTR,call,buy_limit,139.9,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",missed,,,never reached its buy price,
+2026-11-18,2026-11-18T12:15:00-05:00,Bull Flag,GME,call,buy_stop,26.48,2026-11-20,26.5,GME261120C00026500,26.57,0.47,0.66,0.35,"It shot up like a rocket, rested, and is ready to take off again.",stop,0.33,2026-11-18T14:03:57.273861-05:00,,full
