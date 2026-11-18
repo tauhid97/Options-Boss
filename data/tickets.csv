@@ -92,3 +92,4 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,BIDU,call,buy_stop,73.35,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,INTC,call,buy_stop,55.22,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-17,2026-11-17T11:34:00-05:00,Oversold Bounce,SE,call,buy_stop,71.32,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
+2026-11-18,2026-11-18T11:08:00-05:00,Morning Breakout,NVDA,put,,,2026-11-20,152.5,NVDA261120P00152500,152.29,3.7,5.18,2.78,"NVDA is going DOWN today (-2.0%). It broke out the bottom of its morning box, and 2.3x more people than usual are trading it.",open,,,,full
