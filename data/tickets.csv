@@ -109,12 +109,12 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-18,2026-11-18T12:15:00-05:00,Bull Flag,GME,call,buy_stop,26.48,2026-11-20,26.5,GME261120C00026500,26.57,0.47,0.66,0.35,"It shot up like a rocket, rested, and is ready to take off again.",stop,0.33,2026-11-18T14:03:57.273861-05:00,,full
 2026-11-19,2026-11-19T11:15:00-05:00,Morning Breakout,AMD,put,,,2026-11-23,400.0,AMD261123P00400000,497.0,2.8,3.92,2.1,"AMD is going DOWN today (-6.4%). It broke out the bottom of its morning box, and 3.2x more people than usual are trading it.",stop,1.72,2026-11-19T12:20:25.571429-05:00,,full
 2026-11-19,2026-11-19T11:15:00-05:00,Morning Breakout,TSLA,put,,,2026-11-23,380.0,TSLA261123P00380000,381.22,8.15,11.41,6.11,"TSLA is going DOWN today (-0.6%). It broke out the bottom of its morning box, and 1.0x more people than usual are trading it.",target,11.65,2026-11-19T12:20:25.571429-05:00,,full
-2026-11-19,2026-11-19T11:37:00-05:00,ORB Stocks in Play,PANW,call,buy_stop,370.01,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
-2026-11-19,2026-11-19T11:37:00-05:00,ORB Stocks in Play,PDD,call,buy_stop,87.39,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",waiting,,,,
+2026-11-19,2026-11-19T11:37:00-05:00,ORB Stocks in Play,PANW,call,buy_stop,370.01,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",missed,,,never reached its buy price,
+2026-11-19,2026-11-19T11:37:00-05:00,ORB Stocks in Play,PDD,call,buy_stop,87.39,,,,,,,,"Everyone is crowding into it today, and it broke out of its morning box.",missed,,,never reached its buy price,
 2026-11-19,2026-11-19T12:20:00-05:00,VWAP Pullback,CRWD,call,buy_limit,251.98,2026-11-27,250.0,CRWD261127C00250000,244.68,8.75,12.25,6.56,"It's having a good day and dipped to its average price, like a sale.",open,,,,full
 2026-11-19,2026-11-19T11:37:00-05:00,VWAP Pullback,BABA,call,buy_limit,86.45,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,the company reports earnings before the ticket ends (prices jump wildly),
 2026-11-19,2026-11-19T11:37:00-05:00,VWAP Pullback,JD,call,buy_limit,25.53,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
-2026-11-19,2026-11-19T11:37:00-05:00,Oversold Bounce,MELI,call,buy_stop,1434.74,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
-2026-11-19,2026-11-19T11:37:00-05:00,Bull Flag,DIS,call,buy_stop,123.38,,,,,,,,"It shot up like a rocket, rested, and is ready to take off again.",waiting,,,,
-2026-11-19,2026-11-19T11:37:00-05:00,Oversold Bounce,UPST,call,buy_stop,18.23,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
-2026-11-19,2026-11-19T11:37:00-05:00,Relative Strength,RBLX,call,buy_stop,50.37,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
+2026-11-19,2026-11-19T11:37:00-05:00,Oversold Bounce,MELI,call,buy_stop,1434.74,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
+2026-11-19,2026-11-19T11:37:00-05:00,Bull Flag,DIS,call,buy_stop,123.38,,,,,,,,"It shot up like a rocket, rested, and is ready to take off again.",missed,,,never reached its buy price,
+2026-11-19,2026-11-19T11:37:00-05:00,Oversold Bounce,UPST,call,buy_stop,18.23,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
+2026-11-19,2026-11-19T11:37:00-05:00,Relative Strength,RBLX,call,buy_stop,50.37,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
