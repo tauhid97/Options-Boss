@@ -129,6 +129,6 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Bounce,BIDU,call,buy_stop,65.45,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Bounce,FCX,call,buy_stop,48.41,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-20,2026-11-20T11:29:00-05:00,Gap-Down Bounce,PYPL,call,buy_stop,54.89,,,,,,,,It fell off a cliff overnight and is bouncing back up.,missed,,,never reached its buy price,
-2026-11-20,2026-11-20T13:04:00-05:00,Relative Strength,UNH,call,buy_stop,347.4,2026-11-27,350.0,UNH261127C00350000,344.33,5.2,7.28,3.9,It's going UP while the rest of the market isn't.,open,,,,short
+2026-11-20,2026-11-20T13:04:00-05:00,Relative Strength,UNH,call,buy_stop,347.4,2026-11-27,350.0,UNH261127C00350000,344.33,5.2,7.28,3.9,It's going UP while the rest of the market isn't.,stop,3.85,2026-11-20T15:57:57.145493-05:00,,short
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,WMT,call,buy_stop,130.53,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,XOM,call,buy_stop,161.37,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
