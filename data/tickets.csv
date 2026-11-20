@@ -119,7 +119,7 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-19,2026-11-19T11:37:00-05:00,Oversold Bounce,UPST,call,buy_stop,18.23,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",missed,,,never reached its buy price,
 2026-11-19,2026-11-19T11:37:00-05:00,Relative Strength,RBLX,call,buy_stop,50.37,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
 2026-11-20,2026-11-20T11:03:00-05:00,Morning Breakout,NVDA,put,,,2026-11-23,135.0,NVDA261123P00135000,137.38,2.89,4.05,2.17,"NVDA is going DOWN today (-5.9%). It broke out the bottom of its morning box, and 6.9x more people than usual are trading it.",open,,,,full
-2026-11-20,2026-11-20T11:03:00-05:00,Morning Breakout,QQQ,put,,,2026-11-23,629.0,QQQ261123P00629000,628.8,9.39,13.15,7.04,"QQQ is going DOWN today (-2.5%). It broke out the bottom of its morning box, and 10.0x more people than usual are trading it.",open,,,,full
+2026-11-20,2026-11-20T11:03:00-05:00,Morning Breakout,QQQ,put,,,2026-11-23,629.0,QQQ261123P00629000,628.8,9.39,13.15,7.04,"QQQ is going DOWN today (-2.5%). It broke out the bottom of its morning box, and 10.0x more people than usual are trading it.",target,14.72,2026-11-20T13:04:10.357140-05:00,,full
 2026-11-20,2026-11-20T11:03:00-05:00,Morning Breakout,AMD,put,,,2026-11-23,400.0,AMD261123P00400000,445.13,4.45,6.23,3.34,"AMD is going DOWN today (-9.0%). It broke out the bottom of its morning box, and 1.2x more people than usual are trading it.",open,,,,full
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Comeback,CRM,call,buy_stop,187.65,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Comeback,MELI,call,buy_stop,1387.99,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
@@ -129,6 +129,6 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Bounce,BIDU,call,buy_stop,65.45,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
 2026-11-20,2026-11-20T11:29:00-05:00,Oversold Bounce,FCX,call,buy_stop,48.41,,,,,,,,"A big stock fell too far, too fast, and is bouncing back.",waiting,,,,
 2026-11-20,2026-11-20T11:29:00-05:00,Gap-Down Bounce,PYPL,call,buy_stop,54.89,,,,,,,,It fell off a cliff overnight and is bouncing back up.,waiting,,,,
-2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,UNH,call,buy_stop,347.4,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
+2026-11-20,2026-11-20T13:04:00-05:00,Relative Strength,UNH,call,buy_stop,347.4,2026-11-27,350.0,UNH261127C00350000,344.33,5.2,7.28,3.9,It's going UP while the rest of the market isn't.,open,,,,short
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,WMT,call,buy_stop,130.53,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,XOM,call,buy_stop,161.37,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
