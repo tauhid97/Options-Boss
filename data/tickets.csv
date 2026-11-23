@@ -133,7 +133,7 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,WMT,call,buy_stop,130.53,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
 2026-11-20,2026-11-20T11:29:00-05:00,Relative Strength,XOM,call,buy_stop,161.37,,,,,,,,It's going UP while the rest of the market isn't.,missed,,,never reached its buy price,
 2026-11-23,2026-11-23T10:33:00-05:00,Morning Breakout,NVDA,call,,,2026-11-25,170.0,NVDA261125C00170000,169.99,3.6,5.04,2.7,"NVDA is going UP today (+35.1%). It broke out the top of its morning box, and 8.9x more people than usual are trading it.",open,,,,full
-2026-11-23,2026-11-23T10:33:00-05:00,Morning Breakout,TSLA,call,,,2026-11-25,390.0,TSLA261125C00390000,392.07,8.9,12.46,6.68,"TSLA is going UP today (+13.3%). It broke out the top of its morning box, and 3.9x more people than usual are trading it.",open,,,,full
+2026-11-23,2026-11-23T10:33:00-05:00,Morning Breakout,TSLA,call,,,2026-11-25,390.0,TSLA261125C00390000,392.07,8.9,12.46,6.68,"TSLA is going UP today (+13.3%). It broke out the top of its morning box, and 3.9x more people than usual are trading it.",stop,6.5,2026-11-23T13:34:01.214251-05:00,,full
 2026-11-23,2026-11-23T10:33:00-05:00,Morning Breakout,SPY,call,,,2026-11-25,726.0,SPY261125C00726000,726.15,6.5,9.1,4.88,"SPY is going UP today (+5.1%). It broke out the top of its morning box, and 3.8x more people than usual are trading it.",open,,,,full
 2026-11-23,2026-11-23T10:39:00-05:00,Oversold Comeback,BIDU,call,buy_stop,66.73,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
 2026-11-23,2026-11-23T10:39:00-05:00,Oversold Comeback,HOOD,call,buy_stop,70.25,,,,,,,,It got knocked down hard yesterday and is climbing back today.,waiting,,,,
@@ -144,9 +144,9 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-23,2026-11-23T10:39:00-05:00,Beaten-Down Turnaround,XPEV,call,buy_stop,8.9,,,,,,,,It's been losing for months and is starting to bounce back.,waiting,,,,
 2026-11-23,2026-11-23T10:39:00-05:00,Gap & Go,IREN,call,buy_stop,16.0,,,,,,,,It jumped up this morning and lots of people are buying.,waiting,,,,
 2026-11-23,2026-11-23T10:39:00-05:00,Gap & Go,ARM,call,buy_stop,183.58,,,,,,,,It jumped up this morning and lots of people are buying.,waiting,,,,
-2026-11-23,2026-11-23T10:39:00-05:00,Hype Breakout,GOOGL,call,buy_stop,284.61,,,,,,,,"Everyone on Reddit is talking about it, and it's going up.",waiting,,,,
+2026-11-23,2026-11-23T13:34:00-05:00,Hype Breakout,GOOGL,call,buy_stop,284.61,2026-11-25,290.0,GOOGL261125C00290000,284.18,2.28,3.19,1.71,"Everyone on Reddit is talking about it, and it's going up.",open,,,,short
 2026-11-23,2026-11-23T10:39:00-05:00,MA20 Reclaim,GE,call,buy_stop,322.48,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-23,2026-11-23T10:39:00-05:00,20-Day Breakout,PDD,call,buy_stop,87.65,,,,,,,,It's about to jump over its highest price of the whole month.,waiting,,,,
 2026-11-23,2026-11-23T11:34:00-05:00,MA20 Reclaim,AAPL,call,buy_stop,352.6,2026-11-25,347.5,AAPL261125C00347500,348.38,4.7,6.58,3.53,It climbed back above its 'normal' line. Buyers are back.,open,,,,full
-2026-11-23,2026-11-23T10:39:00-05:00,MA20 Reclaim,GILD,call,buy_stop,170.72,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,waiting,,,,
+2026-11-23,2026-11-23T10:39:00-05:00,MA20 Reclaim,GILD,call,buy_stop,170.72,,,,,,,,It climbed back above its 'normal' line. Buyers are back.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-23,2026-11-23T10:39:00-05:00,VWAP Pullback,TXN,call,buy_limit,292.74,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
