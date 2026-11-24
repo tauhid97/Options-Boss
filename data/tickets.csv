@@ -161,5 +161,5 @@ date,sent_at,skill,ticker,side,wait_type,wait_price,expiry,strike,symbol,stock_p
 2026-11-24,2026-11-24T10:36:00-05:00,VWAP Pullback,DG,call,buy_limit,138.77,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",skipped,,,"no ticket was popular enough, close enough, and under $1,000",
 2026-11-24,2026-11-24T10:36:00-05:00,VWAP Pullback,KR,call,buy_limit,69.0,,,,,,,,"It's having a good day and dipped to its average price, like a sale.",waiting,,,,
 2026-11-24,2026-11-24T10:36:00-05:00,Relative Strength,VRTX,call,buy_stop,563.18,,,,,,,,It's going UP while the rest of the market isn't.,waiting,,,,
-2026-11-24,2026-11-24T11:34:00-05:00,Relative Strength,NKE,call,buy_stop,35.47,2026-11-27,35.5,NKE261127C00035500,35.51,0.56,0.78,0.42,It's going UP while the rest of the market isn't.,open,,,,short
+2026-11-24,2026-11-24T11:34:00-05:00,Relative Strength,NKE,call,buy_stop,35.47,2026-11-27,35.5,NKE261127C00035500,35.51,0.56,0.78,0.42,It's going UP while the rest of the market isn't.,target,0.79,2026-11-24T13:33:59.637290-05:00,,short
 2026-11-24,2026-11-24T10:36:00-05:00,Relative Strength,GILD,call,buy_stop,176.78,,,,,,,,It's going UP while the rest of the market isn't.,skipped,,,"no ticket was popular enough, close enough, and under $1,000",
