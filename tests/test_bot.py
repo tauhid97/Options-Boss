@@ -7,7 +7,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from optionsboss import backtest, bot, coach, copycat, data, plain, skill, ticket
+from optionsboss import backtest, bot, coach, commands, copycat, data, learn, plain, skill, ticket
 from optionsboss import config as C
 
 NY = C.TIMEZONE
@@ -316,6 +316,114 @@ def test_extra_tickets_are_short_one_liners():
     short.update(status="target", sell_price=0.3)
     assert "(extra practice) reached the win price" in plain.closed(short)
     assert len(plain.closed(short).splitlines()) == 1
+
+
+def test_pattern_notes_are_written():
+    up = [100.0] * 6 + [100 + 0.2 * i for i in range(1, 40)]
+    down = [100.0] * 6 + [100 - 0.05 * i for i in range(1, 40)]
+    aapl, spy = fake_bars(up), fake_bars(down)
+    ts = aapl.index[-1].normalize() + pd.Timedelta(hours=10, minutes=30)
+    n = learn.parse(learn.notes(aapl, spy, "call", ts, 2.0))
+    assert n == {"time": "early", "side": "call", "market": "against", "moved": "1-3%", "gap": "none",
+                 "busy": "busy", "price": "$100-300"}, n
+    assert learn.parse(learn.notes(None, None, "put", ts + pd.Timedelta(hours=3))) == {"time": "afternoon", "side": "put"}
+
+
+def _finished(pattern_rs):
+    """Fake finished tickets: [(notes, R), ...] -> tickets table."""
+    rows = []
+    for i, (n, r) in enumerate(pattern_rs):
+        risk = 1.0 * 100 * C.STOP_PCT / 100 + 2 * C.FEE_PER_CONTRACT
+        # pnl = (sell - buy) * 100 - 2 * fee  ->  sell = buy + (r * risk + 2 * fee) / 100
+        rows.append({"date": "2026-11-0%d" % (1 + i % 9), "skill": "Morning Breakout", "status": "target",
+                     "buy_price": 1.0, "sell_price": 1.0 + (r * risk + 2 * C.FEE_PER_CONTRACT) / 100, "notes": n})
+    return pd.DataFrame(rows)
+
+
+def test_friday_lesson_needs_enough_tickets_and_past_proof():
+    old = os.getcwd()
+    with tempfile.TemporaryDirectory() as d:
+        os.chdir(d)
+        try:
+            few = _finished([("time=early;side=call;market=with", 0.5)] * 5)
+            text = learn.lesson(few)
+            assert "What I learned this week" in text and "Only 5 finished tickets" in text
+            bad, good = "time=early;side=call;market=against", "time=early;side=call;market=with"
+            done = _finished([(bad, -0.8)] * 10 + [(good, 0.4)] * 15)
+            assert abs(learn.table(done)["r"].iloc[0] + 0.8) < 1e-9
+            # the past does NOT show the same thing -> no rule, just a "may be luck" line
+            past_no = pd.DataFrame([{"market": "against", "r": 0.3}] * 20 + [{"market": "with", "r": 0.0}] * 20)
+            text = learn.lesson(done, past=past_no)
+            assert "may be luck" in text and "/yes" not in text
+            # the past shows the same thing -> a rule idea, waiting for Boss
+            past_yes = pd.DataFrame([{"market": "against", "r": -0.4}] * 20 + [{"market": "with", "r": 0.1}] * 20)
+            text = learn.lesson(done, past=past_yes)
+            assert "Idea: skip tickets when the whole market was going the other way" in text and "/yes" in text
+            assert learn.blocked(bad) is None                      # not used until Boss says yes
+            assert "From now on" in commands.answer("/yes", done, pd.Timestamp.now(tz="UTC"))
+            assert learn.blocked(bad) and not learn.blocked(good)
+            assert "market was going the other way" in commands.answer("/rules", done, pd.Timestamp.now(tz="UTC"))
+            assert "No new rule" in learn.answer("/yes")
+            assert "Forgot" in learn.answer("/forget") and learn.blocked(bad) is None
+            # a declined idea is never asked again
+            learn.lesson(done, past=past_yes)
+            assert "won't" in learn.answer("/no")
+            assert "/yes" not in learn.lesson(done, past=past_yes)
+        finally:
+            os.chdir(old)
+
+
+def test_learned_rule_skips_a_ticket_in_the_scan():
+    sent = []
+    old = os.getcwd()
+    with tempfile.TemporaryDirectory() as d:
+        os.chdir(d)
+        try:
+            open("stocks.txt", "w").write("AAPL\n")
+            os.makedirs("data")
+            json_rules = {"rules": [{"key": "side", "value": "call"}], "waiting": None, "declined": []}
+            import json
+            json.dump(json_rules, open("data/learned_rules.json", "w"))
+            up = [100.0] * 6 + [100 + 0.2 * i for i in range(1, 40)]
+            bars = {"AAPL": fake_bars(up), "SPY": fake_bars(up)}
+            day = bars["AAPL"].index[-1].normalize()
+            bot.data.intraday = lambda tickers, **k: bars
+            bot.data.expirations = lambda t: [f"{day + pd.Timedelta(days=3):%Y-%m-%d}"]
+            bot.data.chain = lambda t, e, s: pd.DataFrame({"contractSymbol": ["X"], "strike": [104.0],
+                                                           "bid": [1.95], "ask": [2.00], "openInterest": [5000]})
+            bot.data.earnings_dates = lambda t: []
+            bot.data.jumpiness = lambda t: 0.6
+            bot.send = lambda text: sent.append(text) or True
+            bot.scan(ts=day + pd.Timedelta(hours=10, minutes=30))
+            df = bot.load_tickets()
+            assert set(df["status"]) == {"skipped"} and "learned rule: skip Calls" in df["note"].iloc[0]
+            assert "TICKET 1" not in sent[-1]
+            assert "side=call" in df["notes"].iloc[0]
+        finally:
+            os.chdir(old)
+
+
+def test_friday_lesson_runs_once_after_the_report_card():
+    sent = []
+    old = os.getcwd()
+    with tempfile.TemporaryDirectory() as d:
+        os.chdir(d)
+        try:
+            fri = pd.Timestamp("2026-11-20 16:30", tz=NY)
+            bot._save_state({"scanned": "2026-11-20", "night": "2026-11-20"})
+            up = [100.0] * 6 + [100 + 0.2 * i for i in range(1, 40)]
+            bars = fake_bars(up)
+            old_t = _finished([("", 0.5)]).assign(notes=None, ticker="AAPL", side="call",
+                                                  date=f"{bars.index[-1]:%Y-%m-%d}",
+                                                  sent_at=(bars.index[-1].normalize() + pd.Timedelta(hours=10, minutes=30)).isoformat())
+            bot.save_tickets(old_t)
+            learn.weekly(fri, sent.append, get_bars=lambda t: {x: bars for x in t})
+            learn.weekly(fri + pd.Timedelta(minutes=30), sent.append)
+            learn.weekly(fri - pd.Timedelta(days=1), sent.append)   # Thursday: no lesson
+            assert len(sent) == 1 and "What I learned this week" in sent[0] and "Only 1 finished ticket " in sent[0]
+            assert "side=call" in bot.load_tickets()["notes"].iloc[0]       # the older ticket got its notes
+        finally:
+            os.chdir(old)
 
 
 if __name__ == "__main__":
