@@ -9,7 +9,7 @@ Explained like you're 5:
 import pandas as pd
 
 from . import config as C
-from . import coach, data, plain, ticket
+from . import coach, data, learn, plain, ticket
 
 FINISHED = ["target", "stop", "time"]
 ORDER = {coach.TRUSTED: 0, coach.LEARNING: 1, coach.BENCHED: 2}
@@ -91,7 +91,7 @@ def watch(df, ts, send):
     if hm >= C.BUY_BY:
         df.loc[waiting.index, ["status", "note"]] = ["missed", "never reached its buy price"]
         return df
-    bars = data.intraday(sorted(set(waiting["ticker"])), period="5d")
+    bars = data.intraday(sorted(set(waiting["ticker"]) | {C.MARKET_TICKER}), period="5d")
     marks = coach.grades(done_tickets(df))
     for i, row in waiting.iterrows():
         if row["ticker"] not in bars:
@@ -112,6 +112,16 @@ def watch(df, ts, send):
         if not t:
             df.loc[i, ["status", "note"]] = ["skipped", ticket.WHY[why]]
             send(plain.skipped(row, ticket.WHY[why]))
+            continue
+        n = learn.notes(bars[row["ticker"]], bars.get(C.MARKET_TICKER), "call", ts, t["buy_price"])
+        if "notes" not in df:
+            df["notes"] = None
+        df["notes"] = df["notes"].astype("object")
+        df.at[i, "notes"] = n
+        rule = learn.blocked(n)
+        if rule:
+            df.loc[i, ["status", "note"]] = ["skipped", learn.skip_note(rule)]
+            send(plain.skipped(row, learn.skip_note(rule)))
             continue
         for k, v in t.items():
             df.at[i, k] = v

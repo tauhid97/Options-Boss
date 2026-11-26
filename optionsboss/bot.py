@@ -5,11 +5,12 @@ import os
 import pandas as pd
 
 from . import config as C
-from . import coach, copycat, data, plain, skill, ticket
+from . import coach, copycat, data, learn, plain, skill, ticket
 from .notify import send
 
 COLS = ["date", "sent_at", "skill", "ticker", "side", "wait_type", "wait_price", "expiry", "strike", "symbol",
-        "stock_price", "buy_price", "target", "stop", "reason", "status", "sell_price", "sold_at", "note", "style"]
+        "stock_price", "buy_price", "target", "stop", "reason", "status", "sell_price", "sold_at", "note", "style",
+        "notes"]
 FINISHED = ["target", "stop", "time"]
 # other statuses: "waiting" (stock hasn't reached its buy price yet), "open" (bought, on paper),
 # "skipped" (a safety skill said no), "missed" (never reached its buy price by 2 pm)
@@ -22,7 +23,7 @@ def now():
 def load_tickets():
     if os.path.exists(C.TICKETS_FILE):
         df = pd.read_csv(C.TICKETS_FILE, dtype={c: "object" for c in
-                         ["status", "sold_at", "note", "skill", "wait_type", "symbol", "expiry", "sent_at", "style"]})
+                         ["status", "sold_at", "note", "skill", "wait_type", "symbol", "expiry", "sent_at", "style", "notes"]})
         df["skill"] = df["skill"].fillna(skill.NAME)
         return df
     return pd.DataFrame(columns=COLS)
@@ -60,6 +61,12 @@ def scan(ts=None, force=False):
         base = {"date": ts.strftime("%Y-%m-%d"), "sent_at": ts.isoformat(), "skill": skill.NAME,
                 "ticker": setup["ticker"], "side": setup["side"], "reason": skill.reason(setup)}
         if t:
+            base["notes"] = learn.notes(market.get(setup["ticker"]), market.get(C.MARKET_TICKER), setup["side"],
+                                        ts, t["buy_price"])
+            rule = learn.blocked(base["notes"])
+            if rule:
+                rows.append({**base, "status": "skipped", "note": learn.skip_note(rule)})
+                continue
             full = grade != coach.BENCHED and len(picked) < C.FULL_TICKETS_PER_DAY
             if full:
                 picked.append((t, base["reason"]))
@@ -157,6 +164,7 @@ def night(ts=None):
     send(plain.night(todays, done, no_buys))
     state["night"] = today
     _save_state(state)
+    learn.weekly(ts, send)                     # Fridays: 🧠 What I learned this week
 
 
 def _state():

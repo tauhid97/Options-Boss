@@ -7,6 +7,9 @@ It only ever answers Boss's own chat (TELEGRAM_CHAT_ID); messages from anyone el
   /tickets      the practice tickets still open
   /scoreboard   every finished ticket added up
   /skills       the Coach: how each skill is doing
+  /rules        🧠 the rules the bot learned (and one waiting for a yes)
+  /yes /no      say yes or no to the Coach's new rule idea
+  /forget       undo the newest learned rule
   anything else this help message
 """
 import json
@@ -16,7 +19,7 @@ import pandas as pd
 import requests
 
 from . import config as C
-from . import plain
+from . import learn, plain
 from .bot import FINISHED, load_tickets
 from .notify import send
 
@@ -25,7 +28,10 @@ HELP = ("Hi Boss! I wake up about every 15 minutes on market days, so my answers
         "/status - am I working\n"
         "/tickets - the practice tickets still open\n"
         "/scoreboard - how all the tickets did\n"
-        "/skills - the Coach: how each skill is doing")
+        "/skills - the Coach: how each skill is doing\n"
+        "/rules - 🧠 what the bot learned\n"
+        "/yes or /no - answer the Coach's new rule idea\n"
+        "/forget - undo the newest learned rule")
 
 
 def get_updates(offset):
@@ -68,6 +74,8 @@ def answer(text, df, now):
         return "\n".join(plain.scoreboard(done))
     if word == "/skills":
         return "\n".join(plain.coach(done))
+    if word in ("/rules", "/yes", "/no", "/forget"):
+        return learn.answer(word)
     return HELP
 
 

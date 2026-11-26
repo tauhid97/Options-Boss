@@ -44,6 +44,29 @@ and with `/skills`).
 **stop at Review, don't swipe up.** We watch 2-3 months of live results before even thinking
 about real money.
 
+### 🧠 Pattern Notebook (added 2026-11-18)
+
+Every ticket now saves a few **pattern notes** when it's bought: the time of day, Call or Put, whether
+the whole market (SPY) was going our way, how far the stock had already moved, whether it opened with
+a jump, how busy it was, and how much the ticket cost. (Older tickets get their notes filled in from
+Yahoo's 5-minute prices, which go back about 60 days.)
+
+**Every Friday after the report card** the Coach sends **🧠 What I learned this week**:
+- It waits until there are **20 finished tickets** with notes.
+- A pattern only counts with **8+ tickets** that lost, and did at least **0.30R worse** than the others.
+- **One week can be luck**, so the same pattern must also lose on the **past ~2 months of prices**
+  (estimated ticket prices, 15+ past tickets). If it doesn't, the Coach says "may be luck" and adds no rule.
+- The Coach only **suggests** a rule. Boss types **/yes** or **/no**. `/rules` shows the learned rules,
+  `/forget` undoes the newest one. A rule Boss said no to is never asked again.
+- A learned rule skips matching tickets (they show as "🧠 learned rule: ..."). Everything stays **PRACTICE**.
+
+Settings are in `optionsboss/config.py` (`LEARN_...`), and rules Boss said yes to are saved in `data/learned_rules.json`.
+
+**New skills tested on 2 years of hourly prices (2026-11-18), none added:** Gap & Go, Later breakout,
+Strong vs a red market, Trend-day dip, Lunch breakout, Index first-hour trend. Each one did better than
+random tickets, but all still lost money on estimated prices (buying same-day options fights the
+daily price melt and the buy/sell gap).
+
 ### Lessons from YouTube (tested 2026-11-04)
 
 We watched 9 popular options videos and tested their rules on the last 2 months (estimated prices).

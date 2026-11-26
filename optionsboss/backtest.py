@@ -11,7 +11,7 @@ import math
 import pandas as pd
 
 from . import config as C
-from . import copycat, data, plain, skill, ticket
+from . import copycat, data, learn, plain, skill, ticket
 
 HALF_SPREAD = 0.025
 
@@ -76,7 +76,9 @@ def run(days=55, market=None, closes=None):
             r = replay(setup, market[setup["ticker"]], ts)
             if r:
                 trades.append({"date": f"{day:%Y-%m-%d}", "ticker": setup["ticker"], "side": setup["side"],
-                               "status": r[0], "buy_price": r[1], "sell_price": r[2]})
+                               "status": r[0], "buy_price": r[1], "sell_price": r[2],
+                               "notes": learn.notes(market[setup["ticker"]], market[C.MARKET_TICKER],
+                                                    setup["side"], ts, r[1])})
     return trades, summary(trades, len(all_days) - 10)
 
 
@@ -119,7 +121,7 @@ def run_copied(picks=None, market=None, earnings=None, closes=None):
     if not len(picks):
         return [], "Couldn't get the day-trade bot's past picks."
     if market is None:
-        market = data.intraday(sorted(set(picks["ticker"])), period="60d")
+        market = data.intraday(sorted(set(picks["ticker"]) | {C.MARKET_TICKER}), period="60d")
     if not market:
         return [], "Couldn't get past prices from Yahoo."
     if closes is None:
@@ -170,7 +172,8 @@ def run_copied(picks=None, market=None, earnings=None, closes=None):
             bought += 1
             per_skill[p["setup"]] = per_skill.get(p["setup"], 0) + 1
             trades.append({"date": day, "ticker": p["ticker"], "skill": p["setup"], "side": "call",
-                           "status": r[0], "buy_price": r[1], "sell_price": r[2]})
+                           "status": r[0], "buy_price": r[1], "sell_price": r[2],
+                           "notes": learn.notes(market[p["ticker"]], market.get(C.MARKET_TICKER), "call", check, r[1])})
     n_days = len({t["date"] for t in trades})
     text = summary(trades, n_days, "Day-trade skills as Call tickets") if trades else "The copied picks gave no tickets."
     if trades:

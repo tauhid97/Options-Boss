@@ -1,7 +1,8 @@
 """Command center for Options Boss.
 
   python main.py run            # the 15-minute routine (used by the schedule): tickets, day-trade picks, selling, report card
-  (every run also answers Boss's /status, /tickets and /scoreboard messages to the bot)
+  (every run also answers Boss's /status, /tickets, /scoreboard, /rules, /yes, /no messages to the bot)
+  (Fridays after the report card: 🧠 What I learned this week, from the Pattern Notebook)
   python main.py hello          # send a test message to your Options Boss Telegram
   python main.py scan --force   # look for tickets right now, even outside 10:15-11:30
   python main.py backtest       # practice on the last ~2 months (prints the results, also sends them)

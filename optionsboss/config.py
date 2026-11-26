@@ -64,3 +64,13 @@ BENCH_AFTER = 3                # after just 3 tickets averaging below -0.10R -> 
 BENCH_BELOW = -0.10            #   (benched tickets are still tracked, but sent as short one-liners, never first)
 TRUST_AFTER = 5                # needs 5 tickets averaging above +0.10R -> ⭐ trusted (still PRACTICE!)
 TRUST_ABOVE = 0.10
+
+# --- 🧠 Pattern Notebook (2026-11-18): every ticket saves pattern notes; on Fridays the Coach looks for
+# patterns that keep losing. A pattern only counts if the past ~2 months of prices show the same thing.
+# The Coach only SUGGESTS a rule; Boss types /yes or /no in Telegram. Everything stays PRACTICE. ---
+LEARN_DAY = 4                  # Friday (Monday = 0), after the report card
+LEARN_MIN_TICKETS = 20         # finished tickets with notes before looking for any pattern
+LEARN_MIN_GROUP = 8            # a pattern needs at least 8 live tickets
+LEARN_WORSE_BY = 0.30          # ...that lost, and did at least 0.30R worse than all the other tickets
+LEARN_PAST_MIN = 15            # ...and the same pattern needs 15+ past tickets that also lost
+LEARNED_RULES_FILE = "data/learned_rules.json"
