@@ -1,0 +1,12 @@
+{
+ "rules": [],
+ "waiting": {
+  "key": "time",
+  "value": "afternoon",
+  "n": 12,
+  "avg": -0.52,
+  "past_n": 21,
+  "past_avg": -0.51
+ },
+ "declined": []
+}
